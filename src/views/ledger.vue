@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     filteredButtonsList() {
-      return this.buttonsList.filter((item) => item != 0 || item.length);
+      return this.buttonsList.filter((item) => item.length);
     }
   },
   data() {
@@ -36,7 +36,7 @@ export default {
     // 初始化buttonsList
     let buttonsList = ref(Array.from({length: process.env.VUE_APP_DEF_TYPE_LENGTH}, () => ([])));
     let options = [];
-    axios.get(process.env.VUE_APP_SERVER_URL + "/options?index=1")
+    axios.get(process.env.VUE_APP_SERVER_URL + "/options")
         .then(function (result) {
           options = result.data;
           console.log(options);
@@ -53,10 +53,9 @@ export default {
   },
 
   methods: {
-    getOptions(index, choice) {
+    getOptions(choice) {
       return axios.get(process.env.VUE_APP_SERVER_URL + "/options", {
         params: {
-          'index': index,
           'choice': choice
         }
       });
@@ -64,7 +63,7 @@ export default {
 
     handleTypeChoice(index, value) {
       // 阻止其超过长度
-      if (index >= this.typeStr.length) return;
+      if (index >= this.typeStr.length - 1) return;
 
       // 清空后面的选项
       for (let i = index + 1; i < process.env.VUE_APP_DEF_TYPE_LENGTH; i++) {
@@ -72,10 +71,10 @@ export default {
         this.buttonsList[i] = [];
       }
       this.typeStr[index] = value;
-      console.log(this.typeStr.join(''));
 
       // 获取下一级选项
-      this.getOptions(index + 2, value)
+      let choice = this.typeStr.filter(i => i !== process.env.VUE_APP_DEF_DEFAULT).join('');
+      this.getOptions(choice)
           .then((result) => {
             this.buttonsList[index + 1] = result.data;
             console.log(result.data);
