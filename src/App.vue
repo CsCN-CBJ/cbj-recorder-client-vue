@@ -1,11 +1,32 @@
 <template>
   <!-- 深色模式 https://vant-contrib.gitee.io/vant/#/zh-CN/config-provider#shen-se-mo-shi -->
   <van-config-provider :theme="theme" ></van-config-provider>
-  <VanButton type="primary" color="linear-gradient(to right, #ffffff, #000000)" block size="large" @click=onSwapTheme>深/浅</VanButton>
-  <br><br>
-  <VanButton type="primary" block size="large" @click=handleClick2>Home</VanButton>
-  <br><br>
-  <VanButton type="primary" block size="large" @click=handleClick1>Swap</VanButton>
+  <van-row justify="space-around">
+
+    <van-col>
+      <VanButton type="primary" color="linear-gradient(to right, #000000, #ffffff)" block size="large" @click=onSwapTheme>深/浅</VanButton>
+    </van-col>
+
+    <van-col>
+      <VanButton type="primary" color="green" @click=handleClick2>Home</VanButton>
+    </van-col>
+
+    <van-col>
+      <VanButton type="primary" color="purple" @click=handleClick1>记账</VanButton>
+    </van-col>
+
+
+    <van-col>
+      <VanButton type="primary" color="red" @click=handleClick3>Test</VanButton>
+    </van-col>
+    <van-col>
+      <VanButton type="primary" color="red">Swap</VanButton>
+    </van-col>
+
+  </van-row>
+  <van-space wrap size="20vw">
+    
+  </van-space>
 
   <!-- 放具体路由页面的内容 -->
   <RouterView></RouterView>
@@ -24,14 +45,15 @@ export default {
   methods: {
     onSwapTheme() {
       this.theme = this.theme === 'dark' ? 'light' : 'dark';
-      console.log(process.env.VUE_APP_LEDGER_TOP_COMMON_MEALS)
-      console.log(process.env.VUE_APP_LEDGER_TOP_SNACKS)
     },
     handleClick1() {
-      router.replace('/about');
+      router.replace('/ledger');
     },
     handleClick2() {
       router.replace('/home');
+    },
+    handleClick3() {
+      router.replace('/about');
     },
   }
 }
