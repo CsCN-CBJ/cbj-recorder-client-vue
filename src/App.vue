@@ -47,12 +47,15 @@ export default {
       this.theme = this.theme === 'dark' ? 'light' : 'dark';
     },
     handleClick1() {
+      this.myVibrate();
       router.replace('/ledger');
     },
     handleClick2() {
+      this.myVibrate();
       router.replace('/home');
     },
     handleClick3() {
+      this.myVibrate();
       router.replace('/about');
     },
   }
