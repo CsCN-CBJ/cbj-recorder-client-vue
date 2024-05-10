@@ -1,10 +1,12 @@
 <template>
   <!-- 深色模式 https://vant-contrib.gitee.io/vant/#/zh-CN/config-provider#shen-se-mo-shi -->
-  <van-config-provider :theme="theme" ></van-config-provider>
+  <van-config-provider :theme="theme"></van-config-provider>
   <van-row justify="space-around">
 
     <van-col>
-      <VanButton type="primary" color="linear-gradient(to right, #000000, #ffffff)" block size="large" @click=onSwapTheme>深/浅</VanButton>
+      <VanButton type="primary" color="linear-gradient(to right, #000000, #ffffff)" block size="large"
+                 @click=onSwapTheme>深/浅
+      </VanButton>
     </van-col>
 
     <van-col>
@@ -25,7 +27,7 @@
 
   </van-row>
   <van-space wrap size="20vw">
-    
+
   </van-space>
 
   <!-- 放具体路由页面的内容 -->
@@ -72,6 +74,7 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 .van-theme-dark body {
   color: #f5f5f5;
   background-color: black;
