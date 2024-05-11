@@ -4,8 +4,10 @@
                @buttonClicked="handleTypeChoice(id, $event)"/>
 
   <numInput @input="inputAmount = $event"/>
+  <tagInput placeholder="输入tag" :all-choices="allChoices" @input="inputTag = $event"/>
   <div>{{ typeStr }}</div>
   <div>{{ inputAmount }}</div>
+  <div>{{ inputTag }}</div>
 
 </template>
 
@@ -15,11 +17,13 @@ import {ref} from 'vue';
 import axios from 'axios'
 import buttonGroup from '../components/buttonGroup.vue'
 import numInput from '../components/numInput.vue'
+import tagInput from "@/components/tagInput.vue";
 
 export default {
   components: {
     buttonGroup,
     numInput,
+    tagInput,
   },
   computed: {
     filteredButtonsList() {
@@ -30,6 +34,8 @@ export default {
     return {
       typeStr: new Array(parseInt(process.env.VUE_APP_DEF_TYPE_LENGTH)).fill(process.env.VUE_APP_DEF_DEFAULT),
       inputAmount: '0',
+      inputTag: '',
+      allChoices: [1, 2, 3],
     };
   },
   setup() {
