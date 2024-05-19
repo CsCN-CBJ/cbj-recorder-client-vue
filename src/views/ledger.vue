@@ -5,6 +5,8 @@
 
   <numInput @input="inputAmount = $event"/>
   <tagInput placeholder="输入tag" :all-choices="allChoices" @input="inputTag = $event"/>
+  <van-field label-width="10vw" placeholder="comment" v-model="comment"/>
+  <van-button type="primary" @click="onSubmit">提交</van-button>
   <div>{{ typeStr }}</div>
   <div>{{ inputAmount }}</div>
   <div>{{ inputTag }}</div>
@@ -35,13 +37,15 @@ export default {
       typeStr: new Array(parseInt(process.env.VUE_APP_DEF_TYPE_LENGTH)).fill(process.env.VUE_APP_DEF_DEFAULT),
       inputAmount: '0',
       inputTag: '',
-      allChoices: [1, 2, 3],
+      comment: '',
+      // allChoices: [1, 2, 3],
     };
   },
   setup() {
     // 初始化buttonsList
     let buttonsList = ref(Array.from({length: process.env.VUE_APP_DEF_TYPE_LENGTH}, () => ([])));
-    let options = [];
+    let options = ref([]);
+    let allChoices = ref([]);
     axios.get(process.env.VUE_APP_SERVER_URL + "/options")
         .then(function (result) {
           options = result.data;
@@ -52,21 +56,23 @@ export default {
           console.log(error);
           showToast(error)
         })
+    axios.get(process.env.VUE_APP_SERVER_URL + "/tags")
+        .then((result) => {
+          allChoices.value = result.data;
+          console.log(result.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          showToast(error)
+        })
 
     return {
       buttonsList,
+      allChoices,
     };
   },
 
   methods: {
-    getOptions(choice) {
-      return axios.get(process.env.VUE_APP_SERVER_URL + "/options", {
-        params: {
-          'choice': choice
-        }
-      });
-    },
-
     handleTypeChoice(index, value) {
       // 阻止其超过长度
       if (index >= this.typeStr.length - 1) return;
@@ -80,7 +86,7 @@ export default {
 
       // 获取下一级选项
       let choice = this.typeStr.filter(i => i !== process.env.VUE_APP_DEF_DEFAULT).join('');
-      this.getOptions(choice)
+      this.myRequestGet("/options", {'choice': choice})
           .then((result) => {
             this.buttonsList[index + 1] = result.data;
             console.log(result.data);
@@ -89,6 +95,16 @@ export default {
             console.log(error);
             showToast(error)
           })
+    },
+    onSubmit() {
+      let data = {
+        'choice': this.typeStr.join(''),
+        'amount': this.inputAmount,
+        'tags': this.inputTag,
+        'comment': this.comment,
+      };
+      console.log(data);
+      this.myRequestPostWithHandler("/ledger", data)
     },
   },
 };

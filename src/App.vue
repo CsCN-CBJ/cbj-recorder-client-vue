@@ -22,7 +22,7 @@
       <VanButton type="primary" color="red" @click=handleClick3>Test</VanButton>
     </van-col>
     <van-col>
-      <VanButton type="primary" color="red">Swap</VanButton>
+      <VanButton type="primary" color="red" @click=onLogin>登录</VanButton>
     </van-col>
 
   </van-row>
@@ -60,6 +60,10 @@ export default {
       this.myVibrate();
       router.replace('/about');
     },
+    onLogin() {
+      this.myVibrate();
+      router.replace('/login');
+    }
   }
 }
 

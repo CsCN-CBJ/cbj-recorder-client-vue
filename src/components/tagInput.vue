@@ -11,9 +11,10 @@
     <van-row type="flex">
       <van-col span="16" offset="4">
         <van-search v-model="input" :placeholder="placeholder" data-toggle="tooltip"
-                    @click="init" @keydown="search" @blur="onBlur"/>
+                    @click="init" @blur="onBlur"/>
         <div class="showField">
-          <van-field v-show="searching" v-for="item in filtered" @click.stop="clickOne(item)" :label="item" readonly />
+          <van-field v-show="searching" v-for="item in allChoices.filter((k) => k.includes(this.input))"
+                     @click.stop="clickOne(item)" :label="item" readonly />
         </div>
       </van-col>
 
@@ -37,7 +38,7 @@ export default {
   },
   data() {
     return {
-      input: '0',
+      input: '',
       searching: false,
       filtered: [],
       tags: '',
@@ -48,19 +49,16 @@ export default {
       this.searching = true
       this.filtered = this.allChoices
     },
-    search() {
-      console.log('search')
-    },
     clickOne(item) {
       this.input = item
       this.searching = false
-      this.$emit('input', this.input)
+      this.$emit('input', this.tags)
     },
     onBlur() {
       // 这里延迟是为了让点击事件先触发
       setTimeout(() => {
         this.searching = false
-        this.$emit('input', this.input)
+        this.$emit('input', this.tags)
       }, 200)
     },
     onAddTag() {
@@ -75,6 +73,7 @@ export default {
       }
 
       this.input = ''
+      this.$emit('input', this.tags)
     },
   }
 }
