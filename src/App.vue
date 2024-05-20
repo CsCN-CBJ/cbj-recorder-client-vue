@@ -86,15 +86,19 @@ export default {
 
 :root:root {
   --van-white: #f3f2e0;
-
   --van-gray-1: #BEE7E9;
+
   --van-field-placeholder-text-color: #b0b0b0;
 
   --van-button-default-color: #606060;
   --van-button-default-background: #ECBDB4;
   --van-button-default-border-color: #ECBDB4;
-
   --van-button-success-background: #8CC7B5;
+
+  --van-number-keyboard-background: #ECBDB4;
+  --van-number-keyboard-button-background: #8CC7B5;
+
+  --van-list-text-color: #000000;
 }
 
 </style>

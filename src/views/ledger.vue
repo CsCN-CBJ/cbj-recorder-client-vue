@@ -1,6 +1,6 @@
 <template>
 
-  <van-config-provider v-for="(buttons, id) in filteredButtonsList" :theme-vars="themeVars[id]">
+  <van-config-provider v-for="(buttons, id) in filteredButtonsList" :theme-vars="themeVars[id]" :key="id">
     <buttonGroup :key="id" :buttons="buttons"
                  @buttonClicked="handleTypeChoice(id, $event)"/>
   </van-config-provider>
@@ -12,26 +12,28 @@
       <van-field label-width="10vw" placeholder="comment" v-model="comment"/>
     </van-col>
   </van-row>
+  <br>
   <van-button type="success" @click="onSubmit">提交</van-button>
-  <div>{{ typeStr }}</div>
-  <div>{{ inputAmount }}</div>
-  <div>{{ inputTag }}</div>
+  <br><br>
+  <displayList/>
 
 </template>
 
 <script>
-import {showToast} from 'vant';
+import {showFailToast} from 'vant';
 import {ref} from 'vue';
 import axios from 'axios'
 import buttonGroup from '@/components/buttonGroup.vue'
 import numInput from '@/components/numInput.vue'
 import tagInput from "@/components/tagInput.vue";
+import displayList from "@/components/displayList.vue";
 
 export default {
   components: {
     buttonGroup,
     numInput,
     tagInput,
+    displayList,
   },
   computed: {
     filteredButtonsList() {
@@ -73,7 +75,7 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
-          showToast(error)
+          showFailToast(error)
         })
     axios.get(process.env.VUE_APP_SERVER_URL + "/tags")
         .then((result) => {
@@ -82,7 +84,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          showToast(error)
+          showFailToast(error)
         })
 
     return {
@@ -112,7 +114,7 @@ export default {
           })
           .catch((error) => {
             console.log(error);
-            showToast(error)
+            showFailToast(error)
           })
     },
     onSubmit() {

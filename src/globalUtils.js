@@ -7,15 +7,13 @@ const utils = {
     },
     myRequestGet(path, params) {
         // 验证暂时使用token, 后续使用cookie可以参考https://blog.csdn.net/qq_44962364/article/details/132099859
-        params['token'] = this.$cookies.get('token');
-        console.log(params);
+        // params['token'] = this.$cookies.get('token');
         return axios.get(process.env.VUE_APP_SERVER_URL + path, {
             params: params,
         });
     },
     myRequestPost(path, params) {
         params['token'] = this.$cookies.get('token');
-        console.log(params);
         return axios.post(process.env.VUE_APP_SERVER_URL + path, params);
     },
     myRequestPostWithHandler(path, params) {

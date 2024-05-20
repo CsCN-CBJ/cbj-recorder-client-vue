@@ -7,8 +7,8 @@
 </template>
 
 <script>
-
 export default {
+  emits: ['buttonClicked'],
   props: {
     buttons: {
       type: Array,

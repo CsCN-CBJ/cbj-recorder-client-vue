@@ -11,7 +11,6 @@
       </van-number-keyboard>
     </van-col>
   </van-row>
-  <div>{{ value }}</div>
 
 </template>
 
