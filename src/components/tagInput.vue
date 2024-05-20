@@ -4,7 +4,7 @@
     <van-row type="flex" justify="center">
       <van-col span="16">
         <van-field readonly clickable label="Tags" label-width="10vw"
-                   @click="init" v-model="tags" placeholder="输入tag"/>
+                   @click="init" v-model="tags" placeholder=""/>
       </van-col>
     </van-row>
 
@@ -19,7 +19,7 @@
       </van-col>
 
       <van-col span="4">
-        <van-button type="primary" @click="onAddTag"> 添加
+        <van-button color="#8CC7B5" @click="onAddTag"> 添加
         </van-button>
       </van-col>
     </van-row>

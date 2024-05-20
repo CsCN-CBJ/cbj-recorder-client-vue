@@ -1,6 +1,7 @@
 <template>
   <van-field label-width="10vw" placeholder="请输入口令" v-model="input"/>
-  <van-button type="primary" @click="onSubmitToken">提交</van-button>
+  <br>
+  <van-button type="success" @click="onSubmitToken">提交</van-button>
   <div>{{ status }}</div>
 </template>
 

@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <van-button round type="primary"
-                v-for="(button, index) in buttons"
-                :key="index" @click="handleButtonClick(button)">
-      {{ button.text }}
-    </van-button>
-  </div>
+  <van-button round
+              v-for="(button, index) in buttons"
+              :key="index" @click="handleButtonClick(button)">
+    {{ button.text }}
+  </van-button>
 </template>
 
 <script>

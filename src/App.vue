@@ -4,25 +4,19 @@
   <van-row justify="space-around">
 
     <van-col>
-      <VanButton type="primary" color="linear-gradient(to right, #000000, #ffffff)" block size="large"
-                 @click=onSwapTheme>深/浅
-      </VanButton>
+      <VanButton color="#426579" @click=handleClick2>Home</VanButton>
     </van-col>
 
     <van-col>
-      <VanButton type="primary" color="green" @click=handleClick2>Home</VanButton>
+      <VanButton color="#D69090" @click=handleClick1>记账</VanButton>
     </van-col>
 
     <van-col>
-      <VanButton type="primary" color="purple" @click=handleClick1>记账</VanButton>
+      <VanButton color="#F4606C" @click=handleClick3>Test</VanButton>
     </van-col>
 
-
     <van-col>
-      <VanButton type="primary" color="red" @click=handleClick3>Test</VanButton>
-    </van-col>
-    <van-col>
-      <VanButton type="primary" color="red" @click=onLogin>登录</VanButton>
+      <VanButton color="#D1BA74" @click=onLogin>登录</VanButton>
     </van-col>
 
   </van-row>
@@ -39,9 +33,15 @@ import router from './router';
 
 
 export default {
+  beforeCreate() {
+    document
+        .querySelector('body')
+        .setAttribute('style', 'background-color:#6C99C2')
+  },
+
   data() {
     return {
-      theme: 'dark'
+      theme: 'light'
     }
   },
   methods: {
@@ -83,4 +83,18 @@ export default {
   color: #f5f5f5;
   background-color: black;
 }
+
+:root:root {
+  --van-white: #f3f2e0;
+
+  --van-gray-1: #BEE7E9;
+  --van-field-placeholder-text-color: #b0b0b0;
+
+  --van-button-default-color: #606060;
+  --van-button-default-background: #ECBDB4;
+  --van-button-default-border-color: #ECBDB4;
+
+  --van-button-success-background: #8CC7B5;
+}
+
 </style>

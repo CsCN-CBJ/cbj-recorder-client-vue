@@ -1,20 +1,17 @@
 <template>
-  <div>
 
-    <van-row type="flex" justify="center">
-      <van-col span="16">
-        <van-field readonly clickable label="￥" label-width="10vw" placeholder="请输入金额"
-                   v-model="showValue" @click="show = true"/>
-        <van-number-keyboard theme="custom"
-                             :show="show" :title="'￥'+value" :hide-on-click-outside="false" :maxlength="maxlength"
-                             extra-key="."
-                             @input="handleInput" @delete="handleDelete" @close="handleClose" close-button-text="确定"
-                             @blur="show = false">
-        </van-number-keyboard>
-      </van-col>
-    </van-row>
-    <div>{{ value }}</div>
-  </div>
+  <van-row type="flex" justify="center">
+    <van-col span="16">
+      <van-field readonly clickable label="￥" label-width="10vw" placeholder="请输入金额"
+                 v-model="showValue" @click="show = true"/>
+      <van-number-keyboard theme="custom"
+                           :show="show" :title="'￥'+value" :hide-on-click-outside="false" :maxlength="maxlength"
+                           extra-key="." close-button-text="确定"
+                           @input="handleInput" @delete="handleDelete" @close="handleClose" @blur="show = false">
+      </van-number-keyboard>
+    </van-col>
+  </van-row>
+  <div>{{ value }}</div>
 
 </template>
 

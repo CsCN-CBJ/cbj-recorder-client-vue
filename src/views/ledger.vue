@@ -1,12 +1,18 @@
 <template>
 
-  <buttonGroup v-for="(buttons, id) in filteredButtonsList" :key="id" :buttons="buttons"
-               @buttonClicked="handleTypeChoice(id, $event)"/>
+  <van-config-provider v-for="(buttons, id) in filteredButtonsList" :theme-vars="themeVars[id]">
+    <buttonGroup :key="id" :buttons="buttons"
+                 @buttonClicked="handleTypeChoice(id, $event)"/>
+  </van-config-provider>
 
   <numInput @input="inputAmount = $event"/>
   <tagInput placeholder="输入tag" :all-choices="allChoices" @input="inputTag = $event"/>
-  <van-field label-width="10vw" placeholder="comment" v-model="comment"/>
-  <van-button type="primary" @click="onSubmit">提交</van-button>
+  <van-row type="flex" justify="center">
+    <van-col span="16">
+      <van-field label-width="10vw" placeholder="comment" v-model="comment"/>
+    </van-col>
+  </van-row>
+  <van-button type="success" @click="onSubmit">提交</van-button>
   <div>{{ typeStr }}</div>
   <div>{{ inputAmount }}</div>
   <div>{{ inputTag }}</div>
@@ -17,8 +23,8 @@
 import {showToast} from 'vant';
 import {ref} from 'vue';
 import axios from 'axios'
-import buttonGroup from '../components/buttonGroup.vue'
-import numInput from '../components/numInput.vue'
+import buttonGroup from '@/components/buttonGroup.vue'
+import numInput from '@/components/numInput.vue'
 import tagInput from "@/components/tagInput.vue";
 
 export default {
@@ -38,7 +44,20 @@ export default {
       inputAmount: '0',
       inputTag: '',
       comment: '',
-      // allChoices: [1, 2, 3],
+      themeVars: [
+        {
+          buttonDefaultBackground: '#ecbdb4',
+          buttonDefaultBorderColor: '#ecbdb4',
+        },
+        {
+          buttonDefaultBackground: '#ecb4d0',
+          buttonDefaultBorderColor: '#ecb4d0',
+        },
+        {
+          buttonDefaultBackground:'#d9b4ec',
+          buttonDefaultBorderColor:'#d9b4ec',
+        },
+      ],
     };
   },
   setup() {

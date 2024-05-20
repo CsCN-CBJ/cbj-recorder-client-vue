@@ -3,7 +3,7 @@ import {showFailToast, showSuccessToast} from "vant";
 
 const utils = {
     myVibrate() {
-        navigator.vibrate(200);
+        navigator.vibrate(100);
     },
     myRequestGet(path, params) {
         // 验证暂时使用token, 后续使用cookie可以参考https://blog.csdn.net/qq_44962364/article/details/132099859
