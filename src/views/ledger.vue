@@ -1,8 +1,11 @@
 <template>
 
-  <van-config-provider v-for="(buttons, id) in filteredButtonsList" :theme-vars="themeVars[id]" :key="id">
-    <buttonGroup :key="id" :buttons="buttons"
-                 @buttonClicked="handleTypeChoice(id, $event)"/>
+  <van-config-provider v-for="(buttons, level) in filteredButtonsList" :theme-vars="themeVars[level]" :key="level">
+    <van-button round
+                v-for="(button, index) in buttons" :class="typeStr[level] === button.value ? 'button-selected' : ''"
+                :key="index" @click="handleTypeChoice(level, button.value)">
+      {{ button.text }}
+    </van-button>
   </van-config-provider>
 
   <numInput @input="inputAmount = $event"/>
@@ -23,14 +26,12 @@
 import {showFailToast} from 'vant';
 import {ref} from 'vue';
 import axios from 'axios'
-import buttonGroup from '@/components/buttonGroup.vue'
 import numInput from '@/components/numInput.vue'
 import tagInput from "@/components/tagInput.vue";
 import displayList from "@/components/displayList.vue";
 
 export default {
   components: {
-    buttonGroup,
     numInput,
     tagInput,
     displayList,
@@ -95,6 +96,7 @@ export default {
 
   methods: {
     handleTypeChoice(index, value) {
+      this.myVibrate();
       // 阻止其超过长度
       if (index >= this.typeStr.length - 1) return;
 
@@ -130,3 +132,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .button-selected {
+    background-color: #f56c6c;
+    border-color: #f56c6c;
+  }
+</style>

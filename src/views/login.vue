@@ -7,6 +7,7 @@
 
 <script>
 import axios from "axios";
+import {showFailToast} from "vant";
 
 export default {
   data() {
@@ -18,17 +19,18 @@ export default {
   methods: {
     onSubmitToken() {
       console.log(this.input)
+      this.$cookies.set('token', this.input, '30d')
       axios.post(process.env.VUE_APP_SERVER_URL + "/login", {
         passwd: this.input
       }).then(res => {
         if (res.data === 'success') {
           this.status = 1
-          this.$cookies.set('token', this.input, '30d')
         } else {
           this.status = 2
         }
       }).catch(err => {
         console.log(err)
+        showFailToast(err)
         this.status = 3
       })
     }
