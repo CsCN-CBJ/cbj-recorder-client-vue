@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     onLoad() {
+      this.myVibrate();
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
       setTimeout(() => {

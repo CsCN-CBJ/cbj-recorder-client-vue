@@ -57,8 +57,8 @@ export default {
           buttonDefaultBorderColor: '#ecb4d0',
         },
         {
-          buttonDefaultBackground:'#d9b4ec',
-          buttonDefaultBorderColor:'#d9b4ec',
+          buttonDefaultBackground: '#d9b4ec',
+          buttonDefaultBorderColor: '#d9b4ec',
         },
       ],
     };
@@ -120,6 +120,7 @@ export default {
           })
     },
     onSubmit() {
+      this.myVibrate();
       // 提交前检查
       if (
           !this.$refs.numInput.checkBeforeSubmit()
@@ -137,6 +138,7 @@ export default {
       // 提交成功后清空表单
       this.$refs.numInput.clear();
       this.$refs.tagInput.clear();
+      this.comment = '';
       this.buttonsList = this.buttonsList.map((elem, index) => index === 0 ? elem : []); // 保留第一行选项按钮
       this.typeStr = this.typeStr.map(() => process.env.VUE_APP_DEF_DEFAULT);
     },
@@ -145,8 +147,8 @@ export default {
 </script>
 
 <style scoped>
-  .button-selected {
-    background-color: #f56c6c;
-    border-color: #f56c6c;
-  }
+.button-selected {
+  background-color: #f56c6c;
+  border-color: #f56c6c;
+}
 </style>
