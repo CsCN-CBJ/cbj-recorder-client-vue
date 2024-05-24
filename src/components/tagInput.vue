@@ -13,8 +13,8 @@
         <van-search v-model="input" :placeholder="placeholder" data-toggle="tooltip"
                     @click="init" @blur="onBlur"/>
         <div class="showField">
-          <van-field v-show="searching" v-for="item in allChoices.filter((k) => k.includes(this.input))"
-                     @click.stop="clickOne(item)" :label="item" readonly />
+          <van-field v-show="searching" v-for="item in filteredChoices"
+                     @click.stop="clickOne(item)" :label="item" readonly/>
         </div>
       </van-col>
 
@@ -28,6 +28,9 @@
 </template>
 
 <script>
+import PinyinMatch from 'pinyin-match'
+import {showFailToast} from "vant";
+
 export default {
   props: {
     placeholder: {
@@ -40,14 +43,12 @@ export default {
     return {
       input: '',
       searching: false,
-      filtered: [],
       tags: '',
     }
   },
   methods: {
     init() {
       this.searching = true
-      this.filtered = this.allChoices
     },
     clickOne(item) {
       this.input = item
@@ -75,7 +76,29 @@ export default {
       this.input = ''
       this.$emit('input', this.tags)
     },
-  }
+    clear() {
+      this.input = ''
+      this.tags = ''
+    },
+    checkBeforeSubmit() {
+      if (this.input !== '') {
+        showFailToast('有未添加的tag')
+        return false
+      }
+      return true
+    },
+  },
+  computed: {
+    filteredChoices() {
+      if (this.input === '') {
+        return this.allChoices.slice(0, 10)
+      }
+      return this.allChoices
+          // .filter((k) => k.includes(this.input))
+          .filter((k) => PinyinMatch.match(k, this.input)) // 拼音首字母匹配
+          .slice(0, 10) // 截取前10个
+    },
+  },
 }
 </script>
 

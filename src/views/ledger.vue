@@ -8,8 +8,8 @@
     </van-button>
   </van-config-provider>
 
-  <numInput @input="inputAmount = $event"/>
-  <tagInput placeholder="输入tag" :all-choices="allChoices" @input="inputTag = $event"/>
+  <numInput ref="numInput" @input="inputAmount = $event"/>
+  <tagInput ref="tagInput" placeholder="输入tag" :all-choices="allChoices" @input="inputTag = $event"/>
   <van-row type="flex" justify="center">
     <van-col span="16">
       <van-field label-width="10vw" placeholder="comment" v-model="comment"/>
@@ -120,6 +120,12 @@ export default {
           })
     },
     onSubmit() {
+      // 提交前检查
+      if (
+          !this.$refs.numInput.checkBeforeSubmit()
+          || !this.$refs.tagInput.checkBeforeSubmit()
+      ) return;
+      // 获取表单数据并提交
       let data = {
         'choice': this.typeStr.join(''),
         'amount': this.inputAmount,
@@ -127,7 +133,12 @@ export default {
         'comment': this.comment,
       };
       console.log(data);
-      this.myRequestPostWithHandler("/ledger", data)
+      if (!this.myRequestPostWithHandler("/ledger", data)) return;
+      // 提交成功后清空表单
+      this.$refs.numInput.clear();
+      this.$refs.tagInput.clear();
+      this.buttonsList = this.buttonsList.map((elem, index) => index === 0 ? elem : []); // 保留第一行选项按钮
+      this.typeStr = this.typeStr.map(() => process.env.VUE_APP_DEF_DEFAULT);
     },
   },
 };

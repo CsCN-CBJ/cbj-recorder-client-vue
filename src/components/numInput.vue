@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {Field, NumberKeyboard} from 'vant';
+import {Field, NumberKeyboard, showFailToast} from 'vant';
 
 export default {
   data() {
@@ -67,7 +67,23 @@ export default {
       this.show = false;
       this.showValue = this.value;
       this.$emit('input', this.value);
-    }
+    },
+    clear() {
+      this.value = '';
+      this.showValue = '';
+      this.show = false;
+    },
+    checkBeforeSubmit() {
+      if (this.value !== this.showValue) {
+        showFailToast('请点击确定按钮');
+        return false;
+      }
+      if (this.value === '') {
+        showFailToast('请输入金额');
+        return false;
+      }
+      return true;
+    },
   }
 }
 </script>
