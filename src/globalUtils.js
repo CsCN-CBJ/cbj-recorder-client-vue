@@ -17,23 +17,23 @@ const utils = {
         return axios.post(process.env.VUE_APP_SERVER_URL + path, params);
     },
     myRequestPostWithHandler(path, params) {
-        // 返回值为true/false
-        let ret = false
-        this.myRequestPost(path, params)
+        // 返回值为Promise true/false
+        return this.myRequestPost(path, params)
             .then((result) => {
                 console.log(result.data);
                 if (result.data === 'success') {
                     showSuccessToast('操作成功');
-                    ret = true
+                    return true
                 } else {
                     showFailToast('操作失败: ' + result.data);
+                    return false
                 }
             })
             .catch((error) => {
                 console.log(error);
                 showFailToast(error)
+                return false
             })
-        return ret
     },
 };
 export default utils;

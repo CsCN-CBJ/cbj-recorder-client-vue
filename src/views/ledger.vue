@@ -134,13 +134,16 @@ export default {
         'comment': this.comment,
       };
       console.log(data);
-      if (!this.myRequestPostWithHandler("/ledger", data)) return;
-      // 提交成功后清空表单
-      this.$refs.numInput.clear();
-      this.$refs.tagInput.clear();
-      this.comment = '';
-      this.buttonsList = this.buttonsList.map((elem, index) => index === 0 ? elem : []); // 保留第一行选项按钮
-      this.typeStr = this.typeStr.map(() => process.env.VUE_APP_DEF_DEFAULT);
+      this.myRequestPostWithHandler("/ledger", data)
+          .then((ret) => {
+            if (!ret) return;
+            // 提交成功后清空表单
+            this.$refs.numInput.clear();
+            this.$refs.tagInput.clear();
+            this.comment = '';
+            this.buttonsList = this.buttonsList.map((elem, index) => index === 0 ? elem : []); // 保留第一行选项按钮
+            this.typeStr = this.typeStr.map(() => process.env.VUE_APP_DEF_DEFAULT);
+          })
     },
   },
 };
