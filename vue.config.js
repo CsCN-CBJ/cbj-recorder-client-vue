@@ -10,8 +10,8 @@ module.exports = defineConfig({
             key: fs.readFileSync(process.env.VUE_APP_HTTPS_KEY),
             cert: fs.readFileSync(process.env.VUE_APP_HTTPS_CERT),
         },
-        proxy: {
-            ws: false,
+        client: {
+            webSocketURL: 'wss://0.0.0.0:' + process.env.VUE_APP_PORT + '/ws',
         },
     }
 })
