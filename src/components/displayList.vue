@@ -7,17 +7,15 @@
       finished-text="没有更多了"
       @load="onLoad"
   >
-    <van-config-provider :theme-vars="titleTheme">
-      <van-row justify="center">
-        <van-col v-for="item in titleRow" :span="4" :key="item">
-          <van-cell center :key="item" :value="item === '' ? '-' : item"/>
-        </van-col>
-      </van-row>
-    </van-config-provider>
+    <van-row justify="center">
+      <van-col v-for="(item, index) in titleList" :span="columnWidthList[index]" :key="item">
+        <van-cell center :key="item" :title="item" class="list-title"/>
+      </van-col>
+    </van-row>
 
     <van-row v-for="row in list" justify="center" :key="row">
-      <van-col v-for="item in row" :span="4" :key="item">
-        <van-cell border center :key="item" :value="item === '' ? '-' : item"/>
+      <van-col v-for="(item, index) in row" :span="columnWidthList[index]" :key="item">
+        <van-cell center :key="item" :title="item.trim() === '' ? '-' : item" class="list-value"/>
       </van-col>
     </van-row>
   </van-list>
@@ -34,12 +32,8 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      titleRow: ['日期', '类型', '金额', '标签', '备注'],
-      titleTheme: {
-        cellBackground: "#ecbdb4",
-        cellValueColor: "#606060",
-        cellBorderColor: "#000000",
-      },
+      titleList: ['日期', '类型', '金额', '标签 备注'],
+      columnWidthList: [4, 4, 3, 12],
     };
   },
   methods: {
@@ -50,7 +44,7 @@ export default {
       setTimeout(() => {
         this.myRequestGet('/get/ledger')
             .then((response) => {
-              this.list = response.data;
+              this.list = response.data.map((item) => [item[0], item[1], item[2], item[3] + ' ' + item[4]])
             })
             .catch((error) => {
               console.log(error);
@@ -68,3 +62,19 @@ export default {
 };
 
 </script>
+
+<style scoped>
+.list-title {
+  text-align: center;
+  --van-cell-horizontal-padding: 0;
+  color: var(--van-button-default-color);
+  --van-cell-background: #ecbdb4;
+  --van-cell-value-color: #606060;
+  --van-cell-border-color: #000000;
+}
+.list-value {
+  text-align: center;
+  --van-cell-horizontal-padding: 0;
+  color: var(--van-button-default-color);
+}
+</style>
