@@ -2,9 +2,11 @@
   <van-button type="success" @click="onRefresh">刷新</van-button>
   <br>
   <van-list
-      v-model:loading="loading"
+      :loading="loading"
       :finished="finished"
+      :error="error"
       finished-text="没有更多了"
+      error-text="数据请求失败"
       @load="onLoad"
   >
     <van-row justify="center">
@@ -32,6 +34,7 @@ export default {
       list: [],
       loading: false,
       finished: false,
+      error: false,
       titleList: ['日期', '类型', '金额', '标签 备注'],
       columnWidthList: [4, 4, 3, 12],
       listStatus: 0, // 0: 未加载, 1: limit, 2: 月数据, 3: 所有
@@ -47,18 +50,17 @@ export default {
             .then((response) => {
               this.list = response.data.map((item) => [item[0], item[1], item[2], item[3] + ' ' + item[4]])
               this.listStatus++
+              this.loading = false
+              if (this.listStatus === 3) {
+                this.finished = true
+              }
             })
             .catch((error) => {
               console.log(error);
               showFailToast(error)
+              this.loading = false
+              this.error = true
             });
-
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.listStatus === 3)
-          this.finished = true;
       }, 1000);
     },
     onRefresh() {
