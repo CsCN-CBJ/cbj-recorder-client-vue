@@ -38,7 +38,20 @@ export default {
   },
   computed: {
     filteredButtonsList() {
-      return this.buttonsList.filter((item) => item.length);
+      // 将原始的 buttonsList 转换为一个二维数组, 以便在模板中使用
+      let ret = [this.buttonsList] // 由于上面的 v-for 中不会使用children字段, 所以这个可以看作是第一行
+      for (let i = 0; i < this.typeStr.length; i++) {
+
+        let choice = this.typeStr[i]
+        if (choice === process.env.VUE_APP_DEF_DEFAULT) break
+
+        // 寻找匹配项及其children
+        let find = ret[i].find(item => item.value === choice)
+        if (!find || !find.children) break
+        ret.push(find.children)
+
+      }
+      return ret
     }
   },
   data() {
@@ -64,15 +77,12 @@ export default {
     };
   },
   setup() {
-    // 初始化buttonsList
-    let buttonsList = ref(Array.from({length: process.env.VUE_APP_DEF_TYPE_LENGTH}, () => ([])));
-    let options = ref([]);
+    let buttonsList = ref([]);
     let allChoices = ref([]);
+
     axios.get(process.env.VUE_APP_SERVER_URL + "/options")
         .then(function (result) {
-          options = result.data;
-          console.log(options);
-          buttonsList.value[0] = options;
+          buttonsList.value = result.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -81,7 +91,6 @@ export default {
     axios.get(process.env.VUE_APP_SERVER_URL + "/tags")
         .then((result) => {
           allChoices.value = result.data;
-          console.log(result.data);
         })
         .catch((error) => {
           console.log(error);
@@ -103,21 +112,8 @@ export default {
       // 清空后面的选项
       for (let i = index + 1; i < process.env.VUE_APP_DEF_TYPE_LENGTH; i++) {
         this.typeStr[i] = process.env.VUE_APP_DEF_DEFAULT;
-        this.buttonsList[i] = [];
       }
       this.typeStr[index] = value;
-
-      // 获取下一级选项
-      let choice = this.typeStr.filter(i => i !== process.env.VUE_APP_DEF_DEFAULT).join('');
-      this.myRequestGet("/options", {'choice': choice})
-          .then((result) => {
-            this.buttonsList[index + 1] = result.data;
-            console.log(result.data);
-          })
-          .catch((error) => {
-            console.log(error);
-            showFailToast(error)
-          })
     },
     onSubmit() {
       this.myVibrate();
@@ -141,7 +137,6 @@ export default {
             this.$refs.numInput.clear();
             this.$refs.tagInput.clear();
             this.comment = '';
-            this.buttonsList = this.buttonsList.map((elem, index) => index === 0 ? elem : []); // 保留第一行选项按钮
             this.typeStr = this.typeStr.map(() => process.env.VUE_APP_DEF_DEFAULT);
           })
     },
