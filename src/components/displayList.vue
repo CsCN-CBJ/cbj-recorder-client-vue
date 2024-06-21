@@ -1,5 +1,5 @@
 <template>
-  <van-button type="success" @click="onLoad">刷新</van-button>
+  <van-button type="success" @click="onRefresh">刷新</van-button>
   <br>
   <van-list
       v-model:loading="loading"
@@ -34,6 +34,7 @@ export default {
       finished: false,
       titleList: ['日期', '类型', '金额', '标签 备注'],
       columnWidthList: [4, 4, 3, 12],
+      listStatus: 0, // 0: 未加载, 1: limit, 2: 月数据, 3: 所有
     };
   },
   methods: {
@@ -42,9 +43,10 @@ export default {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
       setTimeout(() => {
-        this.myRequestGet('/get/ledger')
+        this.myRequestGet('/get/ledger', {status: Math.min(this.listStatus + 1, 3)})
             .then((response) => {
               this.list = response.data.map((item) => [item[0], item[1], item[2], item[3] + ' ' + item[4]])
+              this.listStatus++
             })
             .catch((error) => {
               console.log(error);
@@ -55,8 +57,14 @@ export default {
         this.loading = false;
 
         // 数据全部加载完成
-        this.finished = true;
+        if (this.listStatus === 3)
+          this.finished = true;
       }, 1000);
+    },
+    onRefresh() {
+      // 重新加载数据
+      this.listStatus = 0
+      this.onLoad()
     },
   },
 };
@@ -72,6 +80,7 @@ export default {
   --van-cell-value-color: #606060;
   --van-cell-border-color: #000000;
 }
+
 .list-value {
   text-align: center;
   --van-cell-horizontal-padding: 0;
