@@ -1,9 +1,9 @@
 <template>
 
-  <optionButtons ref="optionButtons" :buttons-list="buttonsList" @input="choiceList = $event"/>
-  <numInput ref="numInput" @input="inputAmount = $event"/>
-  <tagInput ref="tagInput" placeholder="输入tag" :all-choices="allChoices" @input="inputTag = $event"/>
-  <commentInput ref="commentInput" @input="comment = $event"/>
+  <optionButtons ref="optionButtons" :buttons-list="buttonsList"/>
+  <numInput ref="numInput"/>
+  <tagInput ref="tagInput" :all-choices="allChoices"/>
+  <commentInput ref="commentInput"/>
   <br>
   <van-button type="success" @click="onSubmit">提交</van-button>
   <br><br>
@@ -28,14 +28,6 @@ export default {
     tagInput,
     commentInput,
     displayList,
-  },
-  data() {
-    return {
-      choiceList: [],
-      inputAmount: '0',
-      inputTag: '',
-      comment: '',
-    };
   },
   setup() {
     let buttonsList = ref([]);
@@ -74,10 +66,10 @@ export default {
       ) return;
       // 获取表单数据并提交
       let data = {
-        'choice': this.choiceList.join(''),
-        'amount': this.inputAmount,
-        'tags': this.inputTag,
-        'comment': this.comment,
+        'choice': this.$refs.optionButtons.getValue(),
+        'amount': this.$refs.numInput.getValue(),
+        'tags': this.$refs.tagInput.getValue(),
+        'comment': this.$refs.commentInput.getValue(),
       };
       console.log(data);
       this.myRequestPostWithHandler("/ledger", data)
@@ -88,6 +80,10 @@ export default {
             this.$refs.numInput.clear();
             this.$refs.tagInput.clear();
             this.$refs.commentInput.clear();
+          })
+          .catch((error) => {
+            console.log(error);
+            showFailToast(error)
           })
     },
   },

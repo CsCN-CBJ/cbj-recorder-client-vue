@@ -64,11 +64,14 @@ export default {
         this.choiceList[i] = process.env.VUE_APP_DEF_DEFAULT;
       }
       this.choiceList[index] = value;
-      this.$emit('input', this.choiceList);
     },
+
+    // 供父组件调用
     clear() {
       this.choiceList = new Array(parseInt(process.env.VUE_APP_DEF_TYPE_LENGTH)).fill(process.env.VUE_APP_DEF_DEFAULT);
-      this.$emit('input', this.choiceList);
+    },
+    getValue() {
+      return this.choiceList.join('');
     },
   },
 };

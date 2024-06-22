@@ -66,12 +66,16 @@ export default {
       // 设置显示的值
       this.show = false;
       this.showValue = this.value;
-      this.$emit('input', this.value);
     },
+
+    // 供父组件调用
     clear() {
       this.value = '';
       this.showValue = '';
       this.show = false;
+    },
+    getValue() {
+      return this.value;
     },
     checkBeforeSubmit() {
       if (this.value !== this.showValue) {

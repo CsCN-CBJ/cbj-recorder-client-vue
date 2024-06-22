@@ -35,15 +35,15 @@ export default {
   props: {
     placeholder: {
       type: String,
-      default: '输入',
+      default: '输入tag',
     },
     allChoices: Array,
   },
   data() {
     return {
-      input: '',
+      input: '', // 输入框的值
       searching: false,
-      tags: '',
+      tags: '', // 上面tag的值
     }
   },
   methods: {
@@ -53,13 +53,11 @@ export default {
     clickOne(item) {
       this.input = item
       this.searching = false
-      this.$emit('input', this.tags)
     },
     onBlur() {
       // 这里延迟是为了让点击事件先触发
       setTimeout(() => {
         this.searching = false
-        this.$emit('input', this.tags)
       }, 200)
     },
     onAddTag() {
@@ -74,11 +72,15 @@ export default {
       }
 
       this.input = ''
-      this.$emit('input', this.tags)
     },
+
+    // 供父组件调用
     clear() {
       this.input = ''
       this.tags = ''
+    },
+    getValue() {
+      return this.tags
     },
     checkBeforeSubmit() {
       if (this.input !== '') {
