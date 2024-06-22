@@ -5,7 +5,6 @@
       <van-field label-width="10vw" placeholder="comment" v-model="comment"/>
     </van-col>
   </van-row>
-  <div>{{comment}}</div>
 
 </template>
 
