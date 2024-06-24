@@ -12,6 +12,10 @@
 
 <script>
 
+import {ref} from "vue";
+import axios from "axios";
+import {showFailToast} from "vant";
+
 export default {
   data() {
     return {
@@ -33,7 +37,21 @@ export default {
     };
   },
   props: {
-    buttonsList: Array,
+    page: String,
+  },
+  setup(props) {
+    let buttonsList = ref([]);
+    axios.get(process.env.VUE_APP_SERVER_URL + "/options?p=" + props.page)
+        .then(function (result) {
+          buttonsList.value = result.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+          showFailToast(error)
+        })
+    return {
+      buttonsList,
+    };
   },
   computed: {
     filteredButtonsList() {

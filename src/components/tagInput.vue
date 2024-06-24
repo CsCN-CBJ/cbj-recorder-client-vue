@@ -30,6 +30,8 @@
 <script>
 import PinyinMatch from 'pinyin-match'
 import {showFailToast} from "vant";
+import {ref} from "vue";
+import axios from "axios";
 
 export default {
   props: {
@@ -37,13 +39,27 @@ export default {
       type: String,
       default: '输入tag',
     },
-    allChoices: Array,
+    page: String,
   },
   data() {
     return {
       input: '', // 输入框的值
       searching: false,
       tags: '', // 上面tag的值
+    }
+  },
+  setup(props) {
+    let allChoices = ref([])
+    axios.get(process.env.VUE_APP_SERVER_URL + "/tags?p=" + props.page)
+        .then((result) => {
+          allChoices.value = result.data
+        })
+        .catch((error) => {
+          console.log(error)
+          showFailToast(error)
+        })
+    return {
+      allChoices,
     }
   },
   methods: {

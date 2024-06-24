@@ -1,8 +1,8 @@
 <template>
 
-  <optionButtons ref="optionButtons" :buttons-list="buttonsList"/>
+  <optionButtons ref="optionButtons" page="ledger"/>
   <numInput ref="numInput"/>
-  <tagInput ref="tagInput" :all-choices="allChoices"/>
+  <tagInput ref="tagInput" page="ledger"/>
   <commentInput ref="commentInput"/>
   <br>
   <van-button type="success" @click="onSubmit">提交</van-button>
@@ -17,8 +17,6 @@
 
 <script>
 import {showFailToast} from 'vant';
-import {ref} from 'vue';
-import axios from 'axios'
 import optionButtons from "@/components/optionButtons.vue";
 import numInput from '@/components/numInput.vue'
 import tagInput from "@/components/tagInput.vue";
@@ -33,33 +31,6 @@ export default {
     commentInput,
     displayList,
   },
-  setup() {
-    let buttonsList = ref([]);
-    let allChoices = ref([]);
-
-    axios.get(process.env.VUE_APP_SERVER_URL + "/options?p=ledger")
-        .then(function (result) {
-          buttonsList.value = result.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-          showFailToast(error)
-        })
-    axios.get(process.env.VUE_APP_SERVER_URL + "/tags")
-        .then((result) => {
-          allChoices.value = result.data;
-        })
-        .catch((error) => {
-          console.log(error);
-          showFailToast(error)
-        })
-
-    return {
-      buttonsList,
-      allChoices,
-    };
-  },
-
   methods: {
     onSubmit() {
       this.myVibrate();

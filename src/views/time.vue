@@ -1,8 +1,8 @@
 <template>
 
-  <optionButtons ref="optionButtons" :buttons-list="buttonsList"/>
+  <optionButtons ref="optionButtons" page="time"/>
   <timeInput ref="timeInput"/>
-  <tagInput ref="tagInput" :all-choices="allChoices"/>
+  <tagInput ref="tagInput" page="time"/>
   <commentInput ref="commentInput"/>
   <br>
   <van-space size="10vw">
@@ -12,7 +12,7 @@
   </van-space>
   <br><br>
   <displayList
-      :title-list="['开始日期', '结束日期', '种类', '标签 备注']"
+      :title-list="['开始时间', '结束时间', '种类', '标签 备注']"
       :column-width-list="[4, 4, 3, 12]"
       api-path="/get/time"
   />
@@ -21,8 +21,6 @@
 
 <script>
 import {showFailToast} from 'vant';
-import {ref} from 'vue';
-import axios from 'axios'
 import optionButtons from "@/components/optionButtons.vue";
 import timeInput from "@/components/timeInput.vue";
 import tagInput from "@/components/tagInput.vue";
@@ -37,36 +35,6 @@ export default {
     commentInput,
     displayList,
   },
-  data() {
-    return {}
-  },
-  setup() {
-    let buttonsList = ref([]);
-    let allChoices = ref([]);
-
-    axios.get(process.env.VUE_APP_SERVER_URL + "/options?p=time")
-        .then((result) => {
-          buttonsList.value = result.data;
-        })
-        .catch((error) => {
-          console.log(error);
-          showFailToast(error)
-        })
-    axios.get(process.env.VUE_APP_SERVER_URL + "/tags")
-        .then((result) => {
-          allChoices.value = result.data;
-        })
-        .catch((error) => {
-          console.log(error);
-          showFailToast(error)
-        })
-
-    return {
-      buttonsList,
-      allChoices,
-    };
-  },
-
   methods: {
     onSubmit(action) {
       this.myVibrate();
