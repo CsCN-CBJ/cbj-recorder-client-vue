@@ -7,7 +7,11 @@
   <br>
   <van-button type="success" @click="onSubmit">提交</van-button>
   <br><br>
-  <displayList/>
+  <displayList
+      :title-list="['日期', '类型', '金额', '标签 备注']"
+      :column-width-list="[4, 4, 3, 12]"
+      api-path="/get/ledger"
+  />
 
 </template>
 

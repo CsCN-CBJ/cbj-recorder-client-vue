@@ -29,14 +29,17 @@
 import {showFailToast} from "vant";
 
 export default {
+  props: {
+    titleList: Array,
+    columnWidthList: Array,
+    apiPath: String,
+  },
   data() {
     return {
       list: [],
       loading: false,
       finished: false,
       error: false,
-      titleList: ['日期', '类型', '金额', '标签 备注'],
-      columnWidthList: [4, 4, 3, 12],
       listStatus: 0, // 0: 未加载, 1: limit, 2: 月数据, 3: 所有
     };
   },
@@ -46,9 +49,9 @@ export default {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
       setTimeout(() => {
-        this.myRequestGet('/get/ledger', {status: Math.min(this.listStatus + 1, 3)})
+        this.myRequestGet(this.apiPath, {status: Math.min(this.listStatus + 1, 3)})
             .then((response) => {
-              this.list = response.data.map((item) => [item[0], item[1], item[2], item[3] + ' ' + item[4]])
+              this.list = response.data.map((item) => [item[0], item[1], item[2], item.slice(3).join(' ')])
               this.listStatus++
               this.loading = false
               if (this.listStatus === 3) {

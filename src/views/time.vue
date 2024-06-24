@@ -11,7 +11,11 @@
     <van-button type="success" @click="onSubmit('end')">结束</van-button>
   </van-space>
   <br><br>
-  <displayList/>
+  <displayList
+      :title-list="['开始日期', '结束日期', '种类', '标签 备注']"
+      :column-width-list="[4, 4, 3, 12]"
+      api-path="/get/time"
+  />
 
 </template>
 
