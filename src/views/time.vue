@@ -1,11 +1,15 @@
 <template>
 
   <optionButtons ref="optionButtons" :buttons-list="buttonsList"/>
-  <numInput ref="numInput"/>
+  <timeInput ref="timeInput"/>
   <tagInput ref="tagInput" :all-choices="allChoices"/>
   <commentInput ref="commentInput"/>
   <br>
-  <van-button type="success" @click="onSubmit">提交</van-button>
+  <van-space size="10vw">
+    <van-button type="success" @click="onSubmit('break')">断点</van-button>
+    <van-button type="success" @click="onSubmit('start')">开始</van-button>
+    <van-button type="success" @click="onSubmit('end')">结束</van-button>
+  </van-space>
   <br><br>
   <displayList/>
 
@@ -16,7 +20,7 @@ import {showFailToast} from 'vant';
 import {ref} from 'vue';
 import axios from 'axios'
 import optionButtons from "@/components/optionButtons.vue";
-import numInput from '@/components/numInput.vue'
+import timeInput from "@/components/timeInput.vue";
 import tagInput from "@/components/tagInput.vue";
 import commentInput from "@/components/commentInput.vue";
 import displayList from "@/components/displayList.vue";
@@ -24,20 +28,23 @@ import displayList from "@/components/displayList.vue";
 export default {
   components: {
     optionButtons,
-    numInput,
+    timeInput,
     tagInput,
     commentInput,
     displayList,
+  },
+  data() {
+    return {}
   },
   setup() {
     let buttonsList = ref([]);
     let allChoices = ref([]);
 
-    axios.get(process.env.VUE_APP_SERVER_URL + "/options?p=ledger")
-        .then(function (result) {
+    axios.get(process.env.VUE_APP_SERVER_URL + "/options?p=time")
+        .then((result) => {
           buttonsList.value = result.data;
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
           showFailToast(error)
         })
@@ -57,27 +64,28 @@ export default {
   },
 
   methods: {
-    onSubmit() {
+    onSubmit(action) {
       this.myVibrate();
       // 提交前检查
       if (
-          !this.$refs.numInput.checkBeforeSubmit()
+          !this.$refs.timeInput.checkBeforeSubmit()
           || !this.$refs.tagInput.checkBeforeSubmit()
       ) return;
       // 获取表单数据并提交
       let data = {
         'choice': this.$refs.optionButtons.getValue(),
-        'amount': this.$refs.numInput.getValue(),
+        'time': this.$refs.timeInput.getValue(),
         'tags': this.$refs.tagInput.getValue(),
         'comment': this.$refs.commentInput.getValue(),
+        'action': action,
       };
       console.log(data);
-      this.myRequestPostWithHandler("/add/ledger", data)
+      this.myRequestPostWithHandler("/add/time", data)
           .then((ret) => {
             if (!ret) return;
             // 提交成功后清空表单
             this.$refs.optionButtons.clear();
-            this.$refs.numInput.clear();
+            this.$refs.timeInput.clear();
             this.$refs.tagInput.clear();
             this.$refs.commentInput.clear();
           })

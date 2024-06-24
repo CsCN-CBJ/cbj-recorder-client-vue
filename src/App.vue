@@ -4,19 +4,19 @@
   <van-row justify="space-around">
 
     <van-col>
-      <VanButton color="#426579" @click=handleClick2>Home</VanButton>
+      <VanButton color="#426579" @click="onNavigate('/home')">Home</VanButton>
     </van-col>
 
     <van-col>
-      <VanButton color="#D69090" @click=handleClick1>记账</VanButton>
+      <VanButton color="#D69090" @click="onNavigate('/ledger')">记账</VanButton>
     </van-col>
 
     <van-col>
-      <VanButton color="#F4606C" @click=handleClick3>Test</VanButton>
+      <VanButton color="#F4606C" @click="onNavigate('/time')">时间</VanButton>
     </van-col>
 
     <van-col>
-      <VanButton color="#D1BA74" @click=onLogin>登录</VanButton>
+      <VanButton color="#D1BA74" @click="onNavigate('/login')">登录</VanButton>
     </van-col>
 
   </van-row>
@@ -48,22 +48,10 @@ export default {
     onSwapTheme() {
       this.theme = this.theme === 'dark' ? 'light' : 'dark';
     },
-    handleClick1() {
+    onNavigate(path) {
       this.myVibrate();
-      router.replace('/ledger');
+      router.replace(path);
     },
-    handleClick2() {
-      this.myVibrate();
-      router.replace('/home');
-    },
-    handleClick3() {
-      this.myVibrate();
-      router.replace('/about');
-    },
-    onLogin() {
-      this.myVibrate();
-      router.replace('/login');
-    }
   }
 }
 

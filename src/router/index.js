@@ -4,6 +4,7 @@ import home from '@/views/home.vue'
 import about from '@/views/about.vue'
 import login from '@/views/login.vue'
 import ledger from '@/views/ledger.vue'
+import time from '@/views/time.vue'
 
 const router = createRouter(
     {
@@ -14,6 +15,7 @@ const router = createRouter(
             {path: '/login', component: login},
             {path: '/about', component: about},
             {path: '/ledger', component: ledger},
+            {path: '/time', component: time}
         ]
     }
 )
