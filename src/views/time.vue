@@ -18,10 +18,20 @@
       api-path="/get/time"
       :maxListLevel="1"
   />
+  <van-space size="10vw">
+    <van-field placeholder="请输入日期: yymmdd" v-model="date"/>
+    <van-button type="success" @click="initEcharts">画图</van-button>
+  </van-space>
+  <div
+      class="echart"
+      ref="myChart"
+      id="myChart"
+  ></div>
 
 </template>
 
 <script>
+import * as echarts from "echarts";
 import {showFailToast} from 'vant';
 import optionButtons from "@/components/optionButtons.vue";
 import timeInput from "@/components/timeInput.vue";
@@ -36,6 +46,12 @@ export default {
     tagInput,
     commentInput,
     displayList,
+  },
+  data() {
+    return {
+      date: this.getCurrentDateFormatted(),
+      chart: undefined,
+    }
   },
   methods: {
     onSubmit(action) {
@@ -72,6 +88,57 @@ export default {
             showFailToast(error)
           })
     },
+    initEcharts() {
+      this.myVibrate();
+      this.myRequestGetWithHandler("/get/time", {'status': this.date})
+          .then((ret) => {
+            const option = {
+              title: {
+                text: "CBJ时间统计: " + `20${this.date.slice(0, 2)}年${this.date.slice(2, 4)}月${this.date.slice(4)}日`,
+              },
+              series: {
+                type: "pie",
+                label: {
+                  show: true,
+                  // formatter: "{b} : {c}h ({d}%)" // b代表名称，c代表对应值，d代表百分比
+                  formatter: "{b}: {c}h",
+                  overflow: "none",
+                  backgroundColor: "transparent",
+                  color: "black",
+                  fontSize: 13,
+                },
+                center: ["50%", "50%"],
+                radius: '50%',
+                data: ret,
+              },
+            };
+            if (this.chart) {
+              this.chart.setOption(option);
+              return;
+            }
+            this.chart = echarts.init(this.$refs.myChart);// 图标初始化
+            this.chart.setOption(option);// 渲染页面
+            //随着屏幕大小调节图表
+            window.addEventListener("resize", () => {
+              this.chart.resize();
+            });
+          })
+    },
+    getCurrentDateFormatted() {
+      const now = new Date()
+      console.log(now.getMonth())
+      return `${now.getFullYear().toString().slice(2)}`
+          + `${(now.getMonth() + 1).toString().padStart(2, '0')}`
+          + `${now.getDate().toString().padStart(2, '0')}`
+    },
   },
 };
 </script>
+
+<style scoped>
+.echart {
+  width: 100%; /* 或具体宽度 */
+  height: 400px; /* 或具体高度 */
+  position: relative; /* 用于绝对定位legend等组件 */
+}
+</style>

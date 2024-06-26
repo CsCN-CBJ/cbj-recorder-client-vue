@@ -54,5 +54,6 @@ const utils = {
                 return false
             })
     },
+    myRequestGetWithHandler,
 };
 export default utils;
