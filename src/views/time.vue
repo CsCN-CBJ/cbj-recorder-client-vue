@@ -125,7 +125,7 @@ export default {
           })
     },
     getCurrentDateFormatted() {
-      const now = new Date()
+      const now = new Date((new Date().getTime() - 24 * 60 * 60 * 1000)) // 前一天
       console.log(now.getMonth())
       return `${now.getFullYear().toString().slice(2)}`
           + `${(now.getMonth() + 1).toString().padStart(2, '0')}`
