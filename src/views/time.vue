@@ -12,6 +12,7 @@
   </van-space>
   <br><br>
   <displayList
+      ref="displayList"
       :title-list="['开始时间', '结束时间', '种类', '标签 备注']"
       :column-width-list="[4, 4, 3, 12]"
       api-path="/get/time"
@@ -60,6 +61,10 @@ export default {
             this.$refs.timeInput.clear();
             this.$refs.tagInput.clear();
             this.$refs.commentInput.clear();
+            // 提交后刷新
+            setTimeout(() => {
+              this.$refs.displayList.onRefresh()
+            }, 2000)
           })
           .catch((error) => {
             console.log(error);

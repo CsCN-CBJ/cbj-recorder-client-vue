@@ -8,6 +8,7 @@
   <van-button type="success" @click="onSubmit">提交</van-button>
   <br><br>
   <displayList
+      ref="displayList"
       :title-list="['日期', '类型', '金额', '标签 备注']"
       :column-width-list="[4, 4, 3, 12]"
       api-path="/get/ledger"
@@ -55,6 +56,10 @@ export default {
             this.$refs.numInput.clear();
             this.$refs.tagInput.clear();
             this.$refs.commentInput.clear();
+            // 提交后刷新
+            setTimeout(() => {
+              this.$refs.displayList.onRefresh()
+            }, 2000)
           })
           .catch((error) => {
             console.log(error);
