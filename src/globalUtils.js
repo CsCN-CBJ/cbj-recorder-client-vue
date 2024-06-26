@@ -1,16 +1,35 @@
 import axios from "axios";
 import {showFailToast, showSuccessToast} from "vant";
 
+export function myRequestGetWithHandler(path, params={}, sendReject=false) {
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.VUE_APP_SERVER_URL + path, {
+            params: params
+        }).then(res => {
+            console.log(res);
+            if (res.status === 200) {
+                // showSuccessToast('操作成功')
+                resolve(res.data)
+            } else {
+                showFailToast('操作失败:\n' + res.data)
+                if (sendReject) {
+                    reject(res.data)
+                }
+            }
+        }).catch(err => {
+            console.log(err)
+            showFailToast('操作失败:\n' + err.message)
+            if (sendReject) {
+                reject(err.data)
+            }
+        })
+    });
+}
+
+
 const utils = {
     myVibrate() {
         navigator.vibrate(100);
-    },
-    myRequestGet(path, params) {
-        // 验证暂时使用token, 后续使用cookie可以参考https://blog.csdn.net/qq_44962364/article/details/132099859
-        // params['token'] = this.$cookies.get('token');
-        return axios.get(process.env.VUE_APP_SERVER_URL + path, {
-            params: params,
-        });
     },
     myRequestPost(path, params) {
         params['token'] = this.$cookies.get('token');
@@ -25,7 +44,7 @@ const utils = {
                     showSuccessToast('操作成功');
                     return true
                 } else {
-                    showFailToast('操作失败: ' + result.data);
+                    showFailToast('操作失败:\n' + result.data);
                     return false
                 }
             })

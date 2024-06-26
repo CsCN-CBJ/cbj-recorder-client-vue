@@ -31,7 +31,7 @@
 import PinyinMatch from 'pinyin-match'
 import {showFailToast} from "vant";
 import {ref} from "vue";
-import axios from "axios";
+import {myRequestGetWithHandler} from "@/globalUtils";
 
 export default {
   props: {
@@ -50,13 +50,9 @@ export default {
   },
   setup(props) {
     let allChoices = ref([])
-    axios.get(process.env.VUE_APP_SERVER_URL + "/tags?p=" + props.page)
+    myRequestGetWithHandler("/tags", {'p': props.page})
         .then((result) => {
-          allChoices.value = result.data
-        })
-        .catch((error) => {
-          console.log(error)
-          showFailToast(error)
+          allChoices.value = result
         })
     return {
       allChoices,

@@ -26,7 +26,7 @@
 
 <script>
 
-import {showFailToast} from "vant";
+import {myRequestGetWithHandler} from "@/globalUtils";
 
 export default {
   props: {
@@ -47,24 +47,21 @@ export default {
     onLoad() {
       this.myVibrate();
       // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        this.myRequestGet(this.apiPath, {status: Math.min(this.listStatus + 1, 3)})
-            .then((response) => {
-              this.list = response.data.map((item) => [item[0], item[1], item[2], item.slice(3).join(' ')])
+      myRequestGetWithHandler(this.apiPath, {status: Math.min(this.listStatus + 1, 3)}, true)
+          .then((result) => {
+            setTimeout(() => {
+              this.list = result.map((item) => [item[0], item[1], item[2], item.slice(3).join(' ')])
               this.listStatus++
               this.loading = false
               if (this.listStatus === 3) {
                 this.finished = true
               }
-            })
-            .catch((error) => {
-              console.log(error);
-              showFailToast(error)
-              this.loading = false
-              this.error = true
-            });
-      }, 1000);
+              }, 1000)
+          })
+          .catch(() => {
+            this.loading = false
+            this.error = true
+          });
     },
     onRefresh() {
       // 重新加载数据

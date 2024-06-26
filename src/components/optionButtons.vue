@@ -13,8 +13,7 @@
 <script>
 
 import {ref} from "vue";
-import axios from "axios";
-import {showFailToast} from "vant";
+import {myRequestGetWithHandler} from "@/globalUtils";
 
 export default {
   data() {
@@ -41,13 +40,9 @@ export default {
   },
   setup(props) {
     let buttonsList = ref([]);
-    axios.get(process.env.VUE_APP_SERVER_URL + "/options?p=" + props.page)
-        .then(function (result) {
-          buttonsList.value = result.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-          showFailToast(error)
+    myRequestGetWithHandler("/options", {'p': props.page})
+        .then((result) => {
+          buttonsList.value = result;
         })
     return {
       buttonsList,
