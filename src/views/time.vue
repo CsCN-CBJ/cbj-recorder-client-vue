@@ -16,6 +16,7 @@
       :title-list="['开始时间', '结束时间', '种类', '标签 备注']"
       :column-width-list="[4, 4, 3, 12]"
       api-path="/get/time"
+      :maxListLevel="1"
   />
 
 </template>

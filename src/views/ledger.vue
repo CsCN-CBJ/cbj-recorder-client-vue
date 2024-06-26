@@ -12,6 +12,7 @@
       :title-list="['日期', '类型', '金额', '标签 备注']"
       :column-width-list="[4, 4, 3, 12]"
       api-path="/get/ledger"
+      :maxListLevel="3"
   />
 
 </template>

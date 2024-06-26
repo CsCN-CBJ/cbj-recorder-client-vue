@@ -33,6 +33,7 @@ export default {
     titleList: Array,
     columnWidthList: Array,
     apiPath: String,
+    maxListLevel: Number,
   },
   data() {
     return {
@@ -48,13 +49,13 @@ export default {
       this.myVibrate();
       // 异步更新数据
       this.loading = true
-      myRequestGetWithHandler(this.apiPath, {status: Math.min(this.listStatus + 1, 3)}, true)
+      myRequestGetWithHandler(this.apiPath, {status: Math.min(this.listStatus + 1, this.maxListLevel)}, true)
           .then((result) => {
             setTimeout(() => {
               this.list = result.map((item) => [item[0], item[1], item[2], item.slice(3).join(' ')])
               this.listStatus++
               this.loading = false
-              if (this.listStatus === 3) {
+              if (this.listStatus >= this.maxListLevel) {
                 this.finished = true
               }
               }, 1000)
