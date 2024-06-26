@@ -47,6 +47,7 @@ export default {
     onLoad() {
       this.myVibrate();
       // 异步更新数据
+      this.loading = true
       myRequestGetWithHandler(this.apiPath, {status: Math.min(this.listStatus + 1, 3)}, true)
           .then((result) => {
             setTimeout(() => {

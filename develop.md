@@ -47,3 +47,5 @@ function myRequestPostWithHandler(path, params) {
 ```
 
 2024-6-18 17:09:46 解决了展示列表中vant cell中文字靠右对齐的问题, 原因: 之前一直设置的是cell的value值, 而value一直都是默认靠右对齐的, 只需要将文字放到title中即可.
+
+2024-6-26 20:35:21 解决了vant list下拉触发时反复加载的问题, 解决方法: 在load的一开始设置loading为true, 但是网上的大部分都没写这一句.
